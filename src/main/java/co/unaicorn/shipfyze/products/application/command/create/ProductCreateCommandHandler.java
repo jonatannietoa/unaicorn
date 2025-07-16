@@ -20,12 +20,8 @@ public class ProductCreateCommandHandler {
     ProductRequest request = productCreateCommand.productRequest();
 
     // Create domain object
-    Product product = new Product(
-        request.name(),
-        request.description(),
-        request.price(),
-        request.category()
-    );
+    Product product =
+        new Product(request.name(), request.description(), request.price(), request.category());
 
     // Save product
     Product savedProduct = productRepository.save(product);
@@ -36,7 +32,6 @@ public class ProductCreateCommandHandler {
         savedProduct.getName(),
         savedProduct.getDescription(),
         savedProduct.getPrice(),
-        savedProduct.getCategory()
-    );
+        savedProduct.getCategory());
   }
 }
