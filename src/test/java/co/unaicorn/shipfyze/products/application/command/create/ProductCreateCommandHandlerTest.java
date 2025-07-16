@@ -66,7 +66,7 @@ class ProductCreateCommandHandlerTest {
 
       private void mockRepositorySaveOperation() {
         Product savedProduct =
-            new Product("Test Product", "Test Description", 99.99, "Electronics");
+            new Product(1L, "Test Product", "Test Description", 99.99, "Electronics");
 
         when(productRepository.save(any(Product.class))).thenReturn(savedProduct);
       }
