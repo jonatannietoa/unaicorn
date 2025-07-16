@@ -1,29 +1,21 @@
 package co.unaicorn.shipfyze.products.application.command.create;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 import co.unaicorn.shipfyze.products.application.dto.ProductRequest;
 import co.unaicorn.shipfyze.products.application.dto.ProductResponse;
-import co.unaicorn.shipfyze.products.domain.Product;
 import co.unaicorn.shipfyze.products.domain.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
 class ProductCreateCommandHandlerTest {
-
-  @Mock private ProductRepository productRepository;
 
   private ProductCreateCommandHandler handler;
 
   @BeforeEach
   void setUp() {
+    ProductRepository productRepository = new ProductRepositoryStub();
     handler = new ProductCreateCommandHandler(productRepository);
   }
 
@@ -42,7 +34,6 @@ class ProductCreateCommandHandlerTest {
 
       private ProductResponse whenExecutingProductCreation() {
         ProductCreateCommand command = createProductCommand();
-        mockRepositorySaveOperation();
 
         return handler.execute(command);
       }
@@ -62,13 +53,6 @@ class ProductCreateCommandHandlerTest {
         ProductRequest request =
             new ProductRequest("Test Product", "Test Description", 99.99, "Electronics");
         return new ProductCreateCommand(request);
-      }
-
-      private void mockRepositorySaveOperation() {
-        Product savedProduct =
-            new Product(1L, "Test Product", "Test Description", 99.99, "Electronics");
-
-        when(productRepository.save(any(Product.class))).thenReturn(savedProduct);
       }
     }
   }
