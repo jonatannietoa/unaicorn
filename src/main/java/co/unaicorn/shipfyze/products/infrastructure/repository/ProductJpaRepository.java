@@ -3,6 +3,7 @@ package co.unaicorn.shipfyze.products.infrastructure.repository;
 import co.unaicorn.shipfyze.products.domain.Product;
 import co.unaicorn.shipfyze.products.domain.ProductRepository;
 import co.unaicorn.shipfyze.products.infrastructure.repository.entity.ProductEntity;
+import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -21,18 +22,22 @@ public class ProductJpaRepository implements ProductRepository {
     return toDomain(savedEntity);
   }
 
+  @Override
+  public Optional<Product> findById(Long id) {
+    return productEntityJpaRepository.findById(id).map(this::toDomain);
+  }
+
   private ProductEntity toEntity(Product product) {
-    ProductEntity entity = new ProductEntity();
-    entity.setId(product.getId());
-    entity.setName(product.getName());
-    entity.setDescription(product.getDescription());
-    entity.setPrice(product.getPrice());
-    entity.setCategory(product.getCategory());
-    return entity;
+    return new ProductEntity(
+        product.getId(),
+        product.getName(),
+        product.getDescription(),
+        product.getPrice(),
+        product.getCategory());
   }
 
   private Product toDomain(ProductEntity entity) {
-    return Product.fromPrimitive(
+    return new Product(
         entity.getId(),
         entity.getName(),
         entity.getDescription(),
